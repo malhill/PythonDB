@@ -3,7 +3,8 @@ import pymongo
 from pymongo import MongoClient
 
 # https://api.mongodb.com/python/current
-client = MongoClient("mongodb://localhost:27017/")
+# Connecting to database
+client = pymongo.MongoClient("mongodb://localhost:27017/")
 filter={}
 
 result = client["Fitness_App"]["Python_Test"].find(
@@ -11,15 +12,40 @@ result = client["Fitness_App"]["Python_Test"].find(
 )
 db = client["Python_Test"]
 collection = db["People"]
+# print(db)
 
 
-# Insert multiple documents
-data_list = [
-    {"name": "Malcolm", "age": 25},
-    {"name": "Mike", "age": 35}
-]
-insert_result = collection.insert_many(data_list)
-print(db)
+# Reading Database!
+def read_documents(collection):
+    try:
+        documents = collection.find()
+        for doc in documents:
+            print(doc)
+    except pymongo.errors.PyMongoError as e:
+        print("Error reading documents:", e)
+# print(read_documents(collection))
+
+# Creating a terminal menu
+def print_menu():
+    print("\n===== MongoDB CRUD Operations =====")
+    print("1. Create a document")
+    print("2. Read all documents")
+    print("3. Update a document")
+    print("4. Delete a document")
+    print("5. Exit")
+
+print_menu()
+
+
+
+
+# Inserting multiple documents manually
+# data_list = [
+#     {"name": "Brianna", "age": 27},
+#     {"name": "Anthony", "age": 32}
+# ]
+# insert_result = collection.insert_many(data_list)
+# print(db)
 
 # The code below is a sqlite3 db with no sql file needed
 
