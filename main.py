@@ -1,33 +1,37 @@
 import sqlite3
 import pymongo
 from pymongo import MongoClient
+from tabulate import tabulate
 
 # https://api.mongodb.com/python/current
 # Connecting to database
 client = pymongo.MongoClient("mongodb://localhost:27017/")
-filter={}
+filter={  }
+
 
 result = client["Fitness_App"]["Python_Test"].find(
   filter=filter
 )
 db = client["Python_Test"]
 collection = db["People"]
-# print(db)
-
+# print(collection)
 
 # Reading Database!
-def read_documents(collection):
+def read_db(collection):
     try:
         documents = collection.find()
         for doc in documents:
-            print(doc)
+            name = doc['name']
+            age = doc['age'] 
+            # print(f'Name:{name} Age:{age}')
+            print(tabulate(documents))
     except pymongo.errors.PyMongoError as e:
         print("Error reading documents:", e)
-# print(read_documents(collection))
+# print(read_db(collection))
 
 # Creating a terminal menu
 def print_menu():
-    print("\n===== MongoDB CRUD Operations =====")
+    print("\n======== MongoDB CRUD Operations ========")
     print("1. Create a document")
     print("2. Read all documents")
     print("3. Update a document")
@@ -35,8 +39,14 @@ def print_menu():
     print("5. Exit")
 
 print_menu()
+action = input("Enter your choice (1-5): ")
 
-
+if action == "2":
+  read_db(collection)
+else:
+  print_menu()  
+  action 
+     
 
 
 # Inserting multiple documents manually
